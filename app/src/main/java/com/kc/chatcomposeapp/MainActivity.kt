@@ -8,6 +8,8 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
@@ -18,6 +20,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.compose.tutorial.SampleData
 import com.kc.chatcomposeapp.ui.theme.ChatComposeAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -26,14 +29,22 @@ class MainActivity : ComponentActivity() {
         setContent {
             ChatComposeAppTheme {
                 Surface(modifier = Modifier.fillMaxSize()){
-                    MessageCard(message = Message("Steve", "5 am rule"))
+                    Conversations(messages = SampleData.conversationSample)
+                    //MessageCard(message = Message("Steve", "5 am rule"))
                 }
             }
         }
     }
 }
 
-data class Message(val author: String, val body: String)
+@Composable
+fun Conversations(messages: List<Message>) {
+    LazyColumn {
+        items(messages) { message ->
+            MessageCard(message = message)
+        }
+    }
+}
 
 @Composable
 fun MessageCard(message: Message) {
@@ -65,7 +76,7 @@ fun MessageCard(message: Message) {
     }
 }
 
-//@Preview(name="light mode")
+/*@Preview(name="light mode")
 @Preview(
     uiMode = Configuration.UI_MODE_NIGHT_YES,
     showBackground = true,
@@ -76,6 +87,21 @@ fun PreviewMessageCard() {
     ChatComposeAppTheme {
         Surface(modifier = Modifier.fillMaxSize()){
             MessageCard(message = Message("Dr Kalam", "Wings of Fire"))
+        }
+    }
+}*/
+
+@Preview(name="light mode")
+@Preview(
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+    showBackground = true,
+    name = "Dark Mode"
+)
+@Composable
+fun PreviewListMessages() {
+    ChatComposeAppTheme {
+        Surface(modifier = Modifier.fillMaxSize()) {
+            Conversations(messages = SampleData.conversationSample)
         }
     }
 }
